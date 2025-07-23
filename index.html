@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- =================== META & LINKS =================== -->
+  <meta charset="UTF-8">
+  <title>DivyaYatri – Spiritual Journeys</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Experience divine pilgrimages with DivyaYatri - Your spiritual travel companion">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- font -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+VN+Guides&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    /* ========== GLOBAL STYLES ========== */
+    :root {
+      --primary-color: #ff9800;
+      --secondary-color: #ffc107;
+      --dark-color: #1a1a1a;
+      --light-color: #f8f9fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0px;
+    }
+
+    body,
+    html {
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      top: 0;
+      padding-top: 0px;
+      background-color: #f5f5f5;
+    }
+
+    /* ========== NAVBAR ========== */
+    nav.navbar {
+      background-color: rgba(26, 26, 26, 0.9);
+      backdrop-filter: blur(8px);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    nav.navbar.scrolled {
+      background-color: rgba(26, 26, 26, 0.98);
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    .navbar-brand {
+      font-family: 'Times New Roman', serif;
+      font-weight: bold;
+      font-size: 1.8rem;
+      color: var(--primary-color) !important;
+    }
+
+    .navbar-brand span {
+      color: var(--light-color);
+    }
+
+    nav.navbar a.nav-link {
+      color: white;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      margin: 0 0.25rem;
+      position: relative;
+    }
+
+    nav.navbar a.nav-link:hover {
+      color: var(--secondary-color);
+    }
+
+    nav.navbar a.nav-link::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--secondary-color);
+      transition: width 0.3s ease;
+    }
+
+    nav.navbar a.nav-link:hover::before {
+      width: 100%;
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero-section {
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url("https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80") no-repeat center center/cover;
+      color: white;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #heroVideo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 100%;
+      min-height: 100%;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+      padding: 0 20px;
+      color: white;
+      padding-top: 20vh;
+    }
+
+    .hero-title {
+      font-size: 5rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+      margin-bottom: 1rem;
+      margin: 42px;
+
+      font-family: "Dancing Script", cursive;
+      font-optical-sizing: auto;
+      font-weight: <weight>;
+      font-style: normal;
+      font-size: 100px;
+    }
+
+    .hero-title span {
+      color: var(--secondary-color);
+    }
+
+    .cta-buttons {
+      margin-top: 2rem;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      margin-left: 1rem;
+    }
+
+    .btn-outline:hover {
+      background: white;
+      color: var(--dark-color);
+    }
+
+    /* ========== TEMPLE SECTION ========== */
+    .temple-section {
+      padding: 5rem 0;
+      background-color: var(--light-color);
+    }
+
+    .section-title {
+      position: relative;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .section-title h2 {
+      font-weight: 700;
+      color: var(--dark-color);
+      display: inline-block;
+      padding-bottom: 10px;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 3px;
+      background-color: var(--primary-color);
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .carousel-container {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .carousel-item img {
+      height: 450px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .carousel-caption {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 5px;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+    }
+
+    .carousel-caption h3 {
+      color: var(--secondary-color);
+      font-weight: 600;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 5%;
+    }
+
+    /* ========== INFO BOX ========== */
+    .info-box {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .info-box h2 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: var(--dark-color);
+      font-weight: 700;
+    }
+
+    .info-box p {
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .btn-learn {
+      margin-top: 20px;
+      background-color: var(--primary-color);
+      border: none;
+      padding: 10px 25px;
+      font-weight: 500;
+      align-self: flex-start;
+      transition: all 0.3s ease;
+    }
+
+    .btn-learn:hover {
+      background-color: var(--dark-color);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ========== AMENITIES SECTION ========== */
+    #map {
+      height: 85vh;
+      width: 100%;
+    }
+
+    #controls {
+      text-align: center;
+      padding: 10px;
+      background: #f8f9fa;
+    }
+
+    select {
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      transition: all 0.3s ease;
+    }
+
+    select:hover {
+      background-color: #c8e6c9;
+      border-color: #388e3c;
+      box-shadow: 0 0 10px rgba(56, 142, 60, 0.4);
+      cursor: pointer;
+    }
+
+    /* ========== PACKAGES SECTION ========== */
+    .packages-section {
+      padding: 5rem 0;
+      background-color: white;
+    }
+
+    .package-card {
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .package-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .package-card img {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .package-card .card-body {
+      padding: 25px;
+    }
+
+    .package-card .card-title {
+      font-weight: 700;
+      color: var(--dark-color);
+      margin-bottom: 15px;
+    }
+
+    .package-card .card-text {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .package-card .btn {
+      background-color: var(--primary-color);
+      border: none;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 3rem 0 1rem;
+    }
+
+    .footer-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links h5 {
+      color: var(--secondary-color);
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-links a {
+      color: #ddd;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--secondary-color);
+      padding-left: 5px;
+    }
+
+    .social-icons a {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 40px;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-5px);
+    }
+
+    .copyright {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      margin-top: 30px;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    /* ========== STATS SECTION ========== */
+    .stats-section {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      padding: 2rem 0;
+      color: white;
+      text-align: center;
+    }
+
+    .stat-item {
+      padding: 1rem;
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffc107;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+      .stat-number {
+        font-size: 1.5rem;
+      }
+
+      .stat-label {
+        font-size: 0.8rem;
+      }
+    }
+
+    /* ========== RESPONSIVE STYLES ========== */
+    @media (max-width: 768px) {
+      nav.navbar {
+        padding: 0.3rem 1rem;
+      }
+
+      .hero-tagline p {
+        font-size: 1.2rem;
+      }
+
+      .carousel-item img {
+        height: 350px;
+      }
+
+      body {
+        padding-top: 60px;
+      }
+
+      .hero-tagline h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-tagline p {
+        font-size: 1.1rem;
+      }
+
+      .carousel-item img {
+        height: 300px;
+      }
+
+      .info-box {
+        margin-top: 30px;
+      }
+
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero-tagline h1 {
+        font-size: 2rem;
+      }
+
+      .carousel-item img {
+        height: 250px;
+      }
+
+      .info-box h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =================== NAVBAR =================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-3" href="#">Divya<span class="text-warning">Yatri</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="places.html">Places</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" href="#">Yatra Plans</a></li> -->
+          <li class="nav-item"><a class="nav-link" href="Festivals.html">Festivals</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =================== HERO SECTION =================== -->
+  <div class="hero-section">
+    <video autoplay muted loop id="heroVideo">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-a-hindu-temple-in-the-evening-11715-large.mp4"
+        type="video/mp4">
+    </video>
+    <div class="hero-content">
+      <h1 class="hero-title">Divya<span>Yatri</span></h1>
+      <p class="hero-subtitle">Embark on a Sacred Journey</p>
+      <div class="cta-buttons">
+        <a href="#temple-section" class="btn btn-primary">Explore Temples</a>
+        <a href="#" class="btn btn-outline">Plan Your Yatra</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== TEMPLE SECTION =================== -->
+  <section id="temple-section" class="temple-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Sacred Temples</h2>
+      </div>
+      <div class="row align-items-center">
+        <!-- Carousel -->
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="carousel-container">
+            <div id="templeCarousel" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="https://www.tirthyatraindia.com/assets/images/spiritual-tours/kashi-vishwanath-temple.jpg"
+                    class="d-block w-100" alt="Kashi Vishwanath">
+                  <div class="carousel-caption">
+                    <h3>Kashi Vishwanath Temple</h3>
+                    <p>One of the most famous Hindu temples dedicated to Lord Shiva</p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Kedarnath_Temple_in_Rainy_season.jpg"
+                    class="d-block w-100" alt="Kedarnath">
+                  <div class="carousel-caption">
+                    <h3>Kedarnath Temple</h3>
+                    <p>Sacred place dedicated to Lord Shiva in the Himalayas</p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img src="https://blessingsonthenet.com/img/gallery/aim_bn_1_1308574858.jpg" class="d-block w-100"
+                    alt="Shirdi">
+                  <div class="carousel-caption">
+                    <h3>Shirdi Sai Baba Temple</h3>
+                    <p>Dedicated to Sai Baba, worshipped by millions worldwide</p>
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#templeCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#templeCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Temple Info -->
+        <div class="col-lg-6">
+          <div class="info-box">
+            <h2>Kashi Vishwanath Temple</h2>
+            <p>One of the most famous Hindu temples dedicated to Lord Shiva, located in Varanasi. It is considered a
+              Jyotirlinga and holds immense religious significance. The temple stands on the western bank of the holy
+              river Ganges and is one of the twelve Jyotirlingas, the holiest of Shiva temples.</p>
+            <p>The main deity is known by the name Vishwanatha or Vishweshwara meaning 'Ruler of the universe'. The
+              temple has been destroyed and rebuilt several times throughout history, with the current structure dating
+              back to the 18th century.</p>
+            <a href="#" class="btn btn-learn">Learn More <i class="fas fa-arrow-right ms-2"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== AMENITIES SECTION & MAP =================== -->
+  <section class="amenities-section py-5">
+    <div class="container">
+      <div class="section-title text-center mb-4">
+        <h2 class="display-5 fw-bold">🔍 Explore Essentials Near You</h2>
+        <p class="lead">Find important services and spiritual sites near your location</p>
+      </div>
+      <!-- Amenity Selector -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-md-8 col-lg-6">
+          <select id="amenitySelect" class="form-select form-select-lg shadow-sm">
+            <option value="" disabled selected>Select an amenity type...</option>
+            <optgroup label="🟥 Priority Essentials">
+              <option value="hospital">🏥 Hospital</option>
+              <option value="police">👮 Police Station</option>
+              <option value="pharmacy">💊 Pharmacy</option>
+              <option value="atm">🏧 ATM</option>
+            </optgroup>
+            <optgroup label="🟡 Travel Related">
+              <option value="bus_station">🚌 Bus Station</option>
+              <option value="train_station">🚉 Train Station</option>
+              <option value="fuel">⛽ Fuel Station</option>
+              <option value="parking">🅿️ Parking</option>
+            </optgroup>
+            <optgroup label="🟢 Food & Stay">
+              <option value="hotel">🏨 Hotel</option>
+              <option value="restaurant">🍽️ Restaurant</option>
+              <option value="cafe">☕ Cafe</option>
+              <option value="supermarket">🛒 Supermarket</option>
+            </optgroup>
+            <optgroup label="🔵 Others">
+              <option value="toilets">🚻 Public Toilet</option>
+              <option value="bank">🏦 Bank</option>
+              <option value="temple">🛕 Temple</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <!-- Map Container -->
+      <div class="map-container rounded-4 shadow-lg overflow-hidden">
+        <div id="map" style="height: 500px;"></div>
+        <div class="map-controls p-3 bg-light">
+          <button id="locateMe" class="btn btn-warning">
+            <i class="fas fa-location-arrow me-2"></i>Locate Me
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== PACKAGES SECTION =================== -->
+  <section class="packages-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Explore Maharashtra</h2>
+      </div>
+      <div class="row">
+        <!-- Explore Maharashtra -->
+        <div class="col-md-4 mb-4">
+          <div class="card package-card">
+            <img src="kumbh.jpg" class="card-img-top" alt="Explore Maharashtra">
+            <div class="card-body">
+              <h5 class="card-title">Explore Maharashtra</h5>
+              <p class="card-text">Visit divine temples, caves, spiritual forts, and pilgrim sites across Maharashtra
+                with our carefully curated travel plans and expert guides.</p>
+              <a href="#" class="btn btn-warning">Know More</a>
+            </div>
+          </div>
+        </div>
+        <!-- Festivals -->
+        <div class="col-md-4 mb-4">
+          <div class="card package-card">
+            <img src="ganesha.jpeg" class="card-img-top" alt="Festivals">
+            <div class="card-body">
+              <h5 class="card-title">Festivals</h5>
+              <p class="card-text">Celebrate Ganeshotsav, Gudi Padwa, Ashadhi Ekadashi, and other sacred yatras with
+                vibrant devotion and traditional fervor.</p>
+              <a href="#" class="btn btn-warning">Explore Festivals</a>
+            </div>
+          </div>
+        </div>
+        <!-- Culture -->
+        <div class="col-md-4 mb-4">
+          <div class="card package-card">
+            <img src="Culture.jpg" class="card-img-top" alt="Culture">
+            <div class="card-body">
+              <h5 class="card-title">Culture & Heritage</h5>
+              <p class="card-text">Experience rich traditions like Lavani dance, Palkhi yatras, and the spiritual
+                lifestyle of Maharashtra's diverse communities.</p>
+              <a href="#" class="btn btn-warning">View Culture</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== TOP TEMPLES SECTION =================== -->
+  <section class="packages-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Top Temples in Maharashtra</h2>
+      </div>
+      <div class="row">
+        <!-- Trimbakeshwar Temple -->
+        <div class="col-md-4 mb-4">
+          <div class="card package-card">
+            <img src="trimbak.jpg" class="card-img-top" alt="Trimbakeshwar Temple">
+            <div class="card-body">
+              <h5 class="card-title">Trimbakeshwar Temple</h5>
+              <p class="card-text">One of the 12 Jyotirlingas, located near Nashik. Famous for its sacred Godavari
+                origin and powerful spiritual aura.</p>
+              <a href="#" class="btn btn-warning">Know More</a>
+            </div>
+          </div>
+        </div>
+        <!-- Siddhivinayak Temple -->
+        <div class="col-md-4 mb-4">
+          <div class="card package-card">
+            <img src="siddhivinayak.jpg" class="card-img-top" alt="Siddhivinayak Temple">
+            <div class="card-body">
+              <h5 class="card-title">Siddhivinayak Temple</h5>
+              <p class="card-text">Located in Mumbai, this temple is dedicated to Lord Ganesha and is one of the richest
+                and most visited temples in India.</p>
+              <a href="#" class="btn btn-warning">Know More</a>
+            </div>
+          </div>
+        </div>
+        <!-- Pandharpur Vitthal Temple -->
+        <div class="col-md-4 mb-4">
+          <div class="card package-card">
+            <img src="pandharpur.jpg" class="card-img-top" alt="Pandharpur Temple">
+            <div class="card-body">
+              <h5 class="card-title">Vitthal Rukmini Temple</h5>
+              <p class="card-text">Spiritual capital for Varkaris. Thousands of devotees walk for days to seek blessings
+                of Lord Vitthal during Ashadhi Ekadashi.</p>
+              <a href="#" class="btn btn-warning">Know More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== FORTS SECTION =================== -->
+  <section class="packages-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Top Historical Forts in Maharashtra</h2>
+      </div>
+      <div class="row">
+        <!-- Raigad Fort -->
+        <div class="col-md-4 mb-4">
+          <div class="card package-card">
+            <img src="raigad.jpg" class="card-img-top" alt="Raigad Fort">
+            <div class="card-body">
+              <h5 class="card-title">Raigad Fort</h5>
+              <p class="card-text">The capital of Chhatrapati Shivaji Maharaj's empire. A symbol of Maratha pride and
+                incredible mountain architecture.</p>
+              <a href="#" class="btn btn-warning">Know More</a>
+            </div>
+          </div>
+        </div>
+        <!-- Sinhagad Fort -->
+        <div class="col-md-4 mb-4">
+          <div class="card package-card">
+            <img src="sinhagad.jpg" class="card-img-top" alt="Sinhagad Fort">
+            <div class="card-body">
+              <h5 class="card-title">Sinhagad Fort</h5>
+              <p class="card-text">Located near Pune, this fort witnessed many important battles. A favorite trekking
+                destination with scenic views.</p>
+              <a href="#" class="btn btn-warning">Know More</a>
+            </div>
+          </div>
+        </div>
+        <!-- Pratapgad Fort -->
+        <div class="col-md-4 mb-4">
+          <div class="card package-card">
+            <img src="Pratapgad.jpg" class="card-img-top" alt="Pratapgad Fort">
+            <div class="card-body">
+              <h5 class="card-title">Pratapgad Fort</h5>
+              <p class="card-text">Site of the legendary battle between Shivaji Maharaj and Afzal Khan. Surrounded by
+                lush greenery and valleys.</p>
+              <a href="#" class="btn btn-warning">Know More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== STATS SECTION =================== -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 stat-item">
+          <div class="stat-number" data-count="500">0</div>
+          <div class="stat-label">Sacred Temples</div>
+        </div>
+        <div class="col-md-3 stat-item">
+          <div class="stat-number" data-count="10000">0</div>
+          <div class="stat-label">Happy Pilgrims</div>
+        </div>
+        <div class="col-md-3 stat-item">
+          <div class="stat-number" data-count="50">0</div>
+          <div class="stat-label">Yatra Packages</div>
+        </div>
+        <div class="col-md-3 stat-item">
+          <div class="stat-number" data-count="15">0</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== FOOTER =================== -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <div class="footer-logo">DivyaYatri</div>
+          <p>Your trusted companion for spiritual journeys across India's most sacred destinations.</p>
+          <div class="social-icons mt-3">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-6 mb-4">
+          <div class="footer-links">
+            <h5>Quick Links</h5>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Temples</a></li>
+              <li><a href="#">Yatra Plans</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="footer-links">
+            <h5>Popular Destinations</h5>
+            <ul>
+              <li><a href="#">Shirdi</a></li>
+              <li><a href="#">Pandharpur</a></li>
+              <li><a href="#">Trimbakeshwar</a></li>
+              <li><a href="#">Bhimashankar</a></li>
+              <li><a href="#">Tuljapur</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="footer-links">
+            <h5>Contact Us</h5>
+            <ul>
+              <li><i class="fas fa-map-marker-alt me-2"></i>Nashik, Maharashtra</li>
+              <li><i class="fas fa-phone me-2"></i> +91 9371913506</li>
+              <li><i class="fas fa-envelope me-2"></i>divyayatri@gamil.com</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2023 DivyaYatri. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =================== SCRIPTS =================== -->
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Leaflet.js -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // ========== MAP & AMENITIES LOGIC ==========
+    document.addEventListener('DOMContentLoaded', function () {
+      var map = L.map('map').setView([20.5937, 78.9629], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      var markerGroup = L.layerGroup().addTo(map);
+      var userMarker, userLat, userLon;
+      var userIcon = L.icon({
+        iconUrl: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
+        iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32]
+      });
+      var amenityIcon = L.icon({
+        iconUrl: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
+        iconSize: [24, 24], iconAnchor: [12, 24], popupAnchor: [0, -24]
+      });
+      function locateUser() {
+        map.locate({ setView: true, maxZoom: 16, timeout: 10000 });
+      }
+      map.on('locationfound', function (e) {
+        userLat = e.latitude; userLon = e.longitude;
+        if (userMarker) markerGroup.removeLayer(userMarker);
+        userMarker = L.marker([userLat, userLon], { icon: userIcon }).addTo(markerGroup).bindPopup("<b>You are here</b>").openPopup();
+        const initialAmenity = document.getElementById('amenitySelect').value;
+        if (initialAmenity) loadAmenities(initialAmenity);
+      });
+      map.on('locationerror', function (e) {
+        alert("Location access denied. Please enable GPS permissions to use this feature.");
+        console.error("Geolocation error:", e.message);
+      });
+      function loadAmenities(type) {
+        if (!userLat || !userLon) { alert("Please allow location access first"); return; }
+        markerGroup.eachLayer(function (layer) { if (layer !== userMarker) markerGroup.removeLayer(layer); });
+        const loadingPopup = L.popup().setLatLng([userLat, userLon]).setContent('<div class="text-center"><i class="fas fa-spinner fa-spin me-2"></i>Loading amenities...</div>').openOn(map);
+        const tagMap = {
+          hospital: 'amenity=hospital', police: 'amenity=police', pharmacy: 'amenity=pharmacy', atm: 'amenity=atm',
+          bus_station: 'amenity=bus_station', train_station: 'railway=station', fuel: 'amenity=fuel', parking: 'amenity=parking',
+          hotel: 'tourism=hotel', restaurant: 'amenity=restaurant', cafe: 'amenity=cafe', supermarket: 'shop=supermarket',
+          toilets: 'amenity=toilets', bank: 'amenity=bank', temple: 'amenity=place_of_worship AND religion=hindu'
+        };
+        const tag = tagMap[type]; if (!tag) return;
+        let query;
+        if (tag.includes("AND")) {
+          const [key1, key2] = tag.split(" AND ");
+          query = `[out:json];node[${key1}][${key2}](around:2000,${userLat},${userLon});out;`;
+        } else {
+          query = `[out:json];node[${tag}](around:2000,${userLat},${userLon});out;`;
+        }
+        fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query })
+          .then(response => { if (!response.ok) throw new Error('Network response was not ok'); return response.json(); })
+          .then(data => {
+            map.closePopup(loadingPopup);
+            data.elements.forEach(elem => {
+              if (elem.lat && elem.lon) {
+                const popupContent = `<div class="map-popup"><h6 class="fw-bold">${elem.tags.name || type.charAt(0).toUpperCase() + type.slice(1)}</h6>${elem.tags['addr:street'] ? `<p class="mb-1">${elem.tags['addr:street']}</p>` : ''}${elem.tags.phone ? `<p class="mb-1"><i class="fas fa-phone me-2"></i>${elem.tags.phone}</p>` : ''}<div class="d-grid mt-2"><a href="https://www.google.com/maps/dir/?api=1&destination=${elem.lat},${elem.lon}" target="_blank" class="btn btn-sm btn-warning"><i class="fas fa-directions me-1"></i> Get Directions</a></div></div>`;
+                L.marker([elem.lat, elem.lon], { icon: amenityIcon }).addTo(markerGroup).bindPopup(popupContent);
+              }
+            });
+            if (data.elements.length === 0) {
+              L.popup().setLatLng([userLat, userLon]).setContent(`<div class="text-center">No ${type} found in this area</div>`).openOn(map);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching amenities:', error);
+            map.closePopup(loadingPopup);
+            L.popup().setLatLng([userLat, userLon]).setContent('<div class="text-center text-danger">Error loading amenities. Please try again.</div>').openOn(map);
+          });
+      }
+      document.getElementById('amenitySelect').addEventListener('change', function () { if (this.value) loadAmenities(this.value); });
+      document.getElementById('locateMe').addEventListener('click', locateUser);
+      locateUser();
+    });
+
+    // ========== PACKAGE CARD HOVER ==========
+    document.querySelectorAll('.package-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-10px)';
+        card.style.boxShadow = '0 15px 30px rgba(0,0,0,0.2)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+        card.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+      });
+    });
+
+    // ========== NAVBAR SCROLL EFFECT ==========
+    window.addEventListener('scroll', function () {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // ========== TEMPLE INFO UPDATE ON CAROUSEL ==========
+    const carouselElement = document.getElementById('templeCarousel');
+    const infoTitle = document.querySelector('.info-box h2');
+    const infoDesc = document.querySelector('.info-box p');
+    const templeInfo = {
+      "Kashi Vishwanath Temple": {
+        desc: "One of the most famous Hindu temples dedicated to Lord Shiva, located in Varanasi. It is considered a Jyotirlinga and holds immense religious significance. The temple stands on the western bank of the holy river Ganges and is one of the twelve Jyotirlingas, the holiest of Shiva temples.",
+        more: "The main deity is known by the name Vishwanatha or Vishweshwara meaning 'Ruler of the universe'. The temple has been destroyed and rebuilt several times throughout history, with the current structure dating back to the 18th century."
+      },
+      "Kedarnath Temple": {
+        desc: "Located in Uttarakhand, Kedarnath is one of the Char Dham and a sacred place dedicated to Lord Shiva, surrounded by the majestic Himalayas. The temple is one of the 12 Jyotirlingas of Lord Shiva and is situated at an altitude of 3,583 meters above sea level.",
+        more: "According to Hindu legends, the temple was initially built by the Pandavas and later revived by Adi Shankaracharya in the 8th century. The temple remains open only between the end of April to Kartik Purnima due to extreme weather conditions."
+      },
+      "Shirdi Sai Baba Temple": {
+        desc: "This famous temple in Maharashtra is dedicated to Sai Baba, a saint worshipped by millions, attracting devotees from all over the world. The temple complex includes the Samadhi Mandir where Sai Baba's remains are interred.",
+        more: "Sai Baba's teachings combined elements of Hinduism and Islam. He taught the importance of realizing one's true self and preached values of love, forgiveness, charity, and contentment. The temple sees thousands of visitors daily, especially on Thursdays."
+      }
+    };
+    carouselElement.addEventListener('slid.bs.carousel', function () {
+      const activeItem = carouselElement.querySelector('.carousel-item.active');
+      const templeName = activeItem.querySelector('h3').textContent;
+      infoTitle.textContent = templeName;
+      infoDesc.innerHTML = `<p>${templeInfo[templeName].desc}</p><p>${templeInfo[templeName].more}</p>`;
+    });
+
+    // ========== SMOOTH SCROLLING FOR ANCHOR LINKS ==========
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // ========== STATS COUNTER ANIMATION ==========
+    function animateCounters() {
+      const counters = document.querySelectorAll('.stat-number');
+      const speed = 200;
+      counters.forEach(counter => {
+        const target = +counter.getAttribute('data-count');
+        const count = +counter.innerText;
+        const increment = target / speed;
+        if (count < target) {
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(animateCounters, 1);
+        } else {
+          counter.innerText = target;
+        }
+      });
+    }
+    window.addEventListener('scroll', function () {
+      const statsSection = document.querySelector('.stats-section');
+      const sectionPosition = statsSection.getBoundingClientRect().top;
+      const screenPosition = window.innerHeight / 1.3;
+      if (sectionPosition < screenPosition) {
+        animateCounters();
+        window.removeEventListener('scroll', arguments.callee);
+      }
+    });
+  </script>
+</body>
+
+</html>

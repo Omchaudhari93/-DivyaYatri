@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Catch My Heart Game 💖</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(to bottom, #ffe5ec, #ffc9dd);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    #gameArea {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .puppy, .heart {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .puppy {
+      background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png');
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .heart {
+      background-image: url('https://cdn-icons-png.flaticon.com/512/833/833472.png');
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-20px); }
+    }
+
+    .message {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+      font-size: 2rem;
+      color: #c2185b;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameArea">
+    <div class="puppy" id="puppy"></div>
+    <div class="heart" id="heart"></div>
+    <div class="message" id="message">You caught my heart! 💖<br>I Love You 🥰</div>
+  </div>
+
+  <script>
+    const puppy = document.getElementById("puppy");
+    const heart = document.getElementById("heart");
+    const message = document.getElementById("message");
+
+    heart.addEventListener("click", () => {
+      heart.style.display = "none";
+      puppy.style.bottom = "50%";
+      puppy.style.transition = "bottom 1s ease-in-out";
+      setTimeout(() => {
+        message.style.display = "block";
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
